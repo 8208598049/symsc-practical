@@ -1,0 +1,87 @@
+1.Write a Java Program to implement I/O Decorator for converting uppercase letters to lower case letters.
+Solution:
+import java.util.Scanner;
+public class CodesCracker
+{
+   public static void main(String[] args)
+   {
+      char chUpper, chLower;
+      int ascii;
+      Scanner scan = new Scanner(System.in);
+      
+      System.out.print("Enter a Character in Uppercase: ");
+      chUpper = scan.next().charAt(0);
+      
+      ascii = chUpper;
+      ascii = ascii + 32;
+      chLower = (char)ascii;
+      
+      System.out.println("\nEquivalent Character in Lowercase = " +chLower);
+   }
+}
+OUTPUT
+C:\Users\preranabhosale \Desktop>java CodesCracker
+Enter a Character in Uppercase: A
+Equivalent Character in Lowercase = a
+
+*************************************************************************************************************************
+
+2.Write a Python program to prepare Scatter Plot for Iris Dataset
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+data = pd.read_csv("Iris.csv")
+print (data.head(10))
+x=data["sepal_length"]
+y=data["petal_length"]
+plt.scatter(x,y)
+plt.show()
+
+*************************************************************************************************************************
+
+3.Create an HTML form that contain the Student Registration details and write a JavaScript to validate Student first and last name as it should not contain other than alphabets and age should be between 18 to 50.
+<html>
+<head>
+    <title>Student Registration</title>
+    <script>
+        function validate() {
+            var Fname = document.getElementById("fname").value;
+            let reF = /\d/;
+            var Lname =document.getElementById("lname").value;
+            let reL = /\d/;
+            var Age = document.getElementById("age").value;
+           
+            if (reF.test(Fname)) {
+                alert("Please use Alphabates to write first  name.");
+                return false;
+            }
+            else if ( reL.test(Lname)) { 
+                alert("Please use Alphabates to write last name.");
+                return false;
+            }
+
+            else if(!(Age < 50  &&  Age >  18) )
+            {
+                alert("age should be between 18 to 50 ");
+                return false;
+            }
+            alert('Registration Successful');
+            return true;
+
+        }
+    </script>
+</head>
+
+<body bgcolor="yellow"> 
+    
+    <form onsubmit=validate()>
+        <h1><b>Student Registration</b></h1>
+        First Name:<input type="text" id="fname" /><br>
+        Last Name:<input type="text" id="lname" /><br>
+        Age:<input type="text" id="age" /><br>
+        <input type="submit"  >
+    </form>
+</body>
+</html>
+
+

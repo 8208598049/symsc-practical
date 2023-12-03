@@ -1,0 +1,173 @@
+1.Write a Java Program to implement Factory method for Pizza Store with createPizza(), 
+orederPizza(), prepare(), Bake(), cut(), box(). Use this to create variety of pizza’s like 
+NyStyleCheesePizza, ChicagoStyleCheesePizza etc.
+Solution:
+import java.util.Scanner;
+abstract class Pizza {
+ String name;
+ public void prepare() {
+     System.out.println("Preparing " + name);
+ }
+ public void bake() {
+     System.out.println("Baking " + name);
+ }
+ public void cut() {
+     System.out.println("Cutting " + name);
+ }
+ public void box() {
+     System.out.println("Boxing " + name);
+ }
+}
+//Concrete Pizza classes
+class NYStyleCheesePizza extends Pizza {
+ public NYStyleCheesePizza() {
+     name = "NY Style Cheese Pizza";
+ }
+}
+class ChicagoStyleCheesePizza extends Pizza {
+ public ChicagoStyleCheesePizza() {
+     name = "Chicago Style Cheese Pizza";
+ }
+}
+//PizzaStore with Factory Method
+abstract class PizzaStore {
+ public Pizza orderPizza(String type) {
+     Pizza pizza = createPizza(type);
+     pizza.prepare();
+     pizza.bake();
+     pizza.cut();
+     pizza.box();
+     return pizza;
+ }
+ protected abstract Pizza createPizza(String type);
+}
+class NYPizzaStore extends PizzaStore {
+ @Override
+ protected Pizza createPizza(String type) {
+     if (type.equals("cheese")) {
+         return new NYStyleCheesePizza();
+     } else {
+         // Add more pizza types as needed
+         return null;
+     }
+ }
+}
+class ChicagoPizzaStore extends PizzaStore {
+ @Override
+ protected Pizza createPizza(String type) {
+     if (type.equals("cheese")) {
+         return new ChicagoStyleCheesePizza();
+     } else {
+         // Add more pizza types as needed
+         return null;
+     }
+ }
+}
+public class PizzaTest {
+ public static void main(String[] args) {
+     PizzaStore nyStore = new NYPizzaStore();
+     PizzaStore chicagoStore = new ChicagoPizzaStore();
+     Pizza nyCheesePizza = nyStore.orderPizza("cheese");
+     System.out.println("Ordered a " + nyCheesePizza.name + "\n");
+     Pizza chicagoCheesePizza = chicagoStore.orderPizza("cheese");
+     System.out.println("Ordered a " + chicagoCheesePizza.name + "\n");
+    
+     Scanner scanner = new Scanner(System.in);
+     System.out.println("Welcome to the Pizza Store!");
+     System.out.print("Enter the type of pizza you want (cheese): ");
+     String pizzaType = scanner.nextLine();
+     Pizza pizza = null;
+     if (pizzaType.equalsIgnoreCase("cheese")) {
+         pizza = nyStore.orderPizza(pizzaType);
+     } else if (pizzaType.equalsIgnoreCase("pepperoni") || pizzaType.equalsIgnoreCase("veggie")) {
+         pizza = chicagoStore.orderPizza(pizzaType);
+     } else {
+         System.out.println("Sorry, we don't have that pizza type.");
+     }
+
+     if (pizza != null) {
+         System.out.println("Ordered a " + pizza.name + "\n");
+     }
+ }
+
+ }
+Output:
+C:\Users\preranabhosale\Desktop\example>javac PizzaTest.java
+
+C:\Users\preranabhosale\Desktop\example>java PizzaTest
+Preparing NY Style Cheese Pizza
+Baking NY Style Cheese Pizza
+Cutting NY Style Cheese Pizza
+Boxing NY Style Cheese Pizza
+Ordered a NY Style Cheese Pizza
+
+Preparing Chicago Style Cheese Pizza
+Baking Chicago Style Cheese Pizza
+Cutting Chicago Style Cheese Pizza
+Boxing Chicago Style Cheese Pizza
+Ordered a Chicago Style Cheese Pizza
+
+Welcome to the Pizza Store!
+Enter the type of pizza you want (cheese): cheese
+Preparing NY Style Cheese Pizza
+Baking NY Style Cheese Pizza
+Cutting NY Style Cheese Pizza
+Boxing NY Style Cheese Pizza
+Ordered a NY Style Cheese Pizza
+
+**************************************************************************************************************************************
+
+2.Write a python program to Implement Simple Linear Regression for predicting Salary .
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+from sklearn.preprocessing import StandardScaler
+df = pd.read_csv('Salary_data.csv')
+print(df.to_string())
+des=df.describe()
+print(des)
+x=df['YearsExp']
+y=df['salary']
+#plt.scatter(x,y)
+#plt.show()
+x=df['YearsExp'].values.reshape(-1,1)
+y=df['salary'].values.reshape(-1,1)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+sc=StandardScaler()
+sc.fit(x_train)
+x_train=sc.transform(x_train)
+x_test=sc.transform(x_test)
+y_train=sc.transform(y_train)
+y_test=sc.transform(y_test)
+LR=LinearRegression()
+LR.fit(x_train,y_train)
+print("Intercept",LR.intercept_)
+print("Coefficient",LR.coef_)
+y_pred=LR.predict(x_test)
+plt.scatter(x_train,y_train)
+plt.plot(x_test,y_pred,color='red')
+plt.title("Simple Regression")
+plt.xlabel("YearExperience")
+plt.ylabel("Salary")
+plt.show()
+data=pd.DataFrame({'Actual':y_test.flatten(),'predicted':y_pred.flatten()})
+print(data)
+y_pred2=LR.predict([[3]])
+print(y_pred2)
+
+**************************************************************************************************************************************
+
+3.Create a Node.js file that will convert the output "Hello World!" into upper-case letters.
+var http = require('http');
+var uc =require('upper-case');
+http.createServer(function(req,res){
+    res.writeHead(200,{'content-type':'text/html'});
+    res.write(uc.upperCase('hello world !'));
+    res.end();
+
+}).listen(8083)
+
+

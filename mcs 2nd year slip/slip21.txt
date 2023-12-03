@@ -1,0 +1,80 @@
+Write a java program to implement commond pattern to test Remote Control
+Solution:
+
+class Light {
+    public void turnOn() {
+        System.out.println("Light is on");
+    }
+    public void turnOff() {
+        System.out.println("Light is off");
+    }
+}
+// Command interface: This defines the abstract command with execute method.
+interface Command {
+    void execute();
+}
+// Concrete Command: These classes implement the Command interface and contain an instance of the Receiver.
+class LightOnCommand implements Command {
+    private Light light;
+    
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+    public void execute() {
+        light.turnOn();
+    }
+}
+class LightOffCommand implements Command {
+    private Light light;
+    public LightOffCommand(Light light) {
+        this.light = light;
+    }
+    public void execute() {
+        light.turnOff();
+    }
+}
+// Invoker: This is the class that will use the Command objects.
+class RemoteControl {
+    private Command command;
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+    
+    public void pressButton() {
+        command.execute();
+    }
+}
+
+public class RemoteControlTest {
+    public static void main(String[] args) {
+        // Create the receiver
+        Light light = new Light();
+        
+        // Create the concrete command objects
+        LightOnCommand lightOn = new LightOnCommand(light);
+        LightOffCommand lightOff = new LightOffCommand(light);
+        
+        // Create the invoker (remote control)
+        RemoteControl remote = new RemoteControl();
+        
+        // Set and press the on button
+        remote.setCommand(lightOn);
+        remote.pressButton();
+        
+        // Set and press the off button
+        remote.setCommand(lightOff);
+        remote.pressButton();
+    }
+}
+Output :
+C:\Users\preranabhosale\Desktop\example>javac RemoteControlTest.java
+
+C:\Users\preranabhosale\Desktop\example>java RemoteControlTest
+Light is on
+Light is off
+
+*************************************************************************************************************************
+
+Write a python program to implement Linear SVM. 
+# Import the Libraries import numpy as np import matplotlib.pyplot as plt from sklearn import svm, datasets # Import some Data from the iris Data Set iris = datasets.load_iris() # Take only the first two features of Data. # To avoid the slicing, Two-Dim Dataset can be used X = iris.data[:, :2] y = iris.target # C is the SVM regularization parameter C = 1.0 # Create an Instance of SVM and Fit out the data. # Data is not scaled so as to be able to plot the support vectors svc = svm.SVC(kernel ='linear', C = 1).fit(X, y) # create a mesh to plot x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1 y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1 h = (x_max / x_min)/100 xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h)) # Plot the data for Proper Visual Representation plt.subplot(1, 1, 1) # Predict the result by giving Data to the model Z = svc.predict(np.c_[xx.ravel(), yy.ravel()]) Z = Z.reshape(xx.shape) plt.contourf(xx, yy, Z, cmap = plt.cm.Paired, alpha = 0.8)
+plt.scatter(X[:, 0], X[:, 1], c = y, cmap = plt.cm.Paired) plt.xlabel('Sepal length') plt.ylabel('Sepal width') plt.xlim(xx.min(), xx.max()) plt.title('SVC with linear kernel') # Output the Plot plt.show()

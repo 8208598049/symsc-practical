@@ -1,0 +1,245 @@
+1 .Write a Java Program to implement State Pattern for Gumball Machine.
+Create instance variable that holds current state from there, we just need to handle all
+actions, behaviors and state transition that can happen
+
+// State interface
+interface State {
+    void insertQuarter();
+    void ejectQuarter();
+    void turnCrank();
+    void dispense();
+}
+
+// Concrete state classes
+
+class NoQuarterState implements State {
+    private GumballMachine gumballMachine;
+
+    public NoQuarterState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertQuarter() {
+        System.out.println("You inserted a quarter");
+        gumballMachine.setState(gumballMachine.getHasQuarterState());
+    }
+
+    @Override
+    public void ejectQuarter() {
+        System.out.println("You haven't inserted a quarter");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("You turned, but there's no quarter");
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("You need to pay first");
+    }
+}
+
+class HasQuarterState implements State {
+    private GumballMachine gumballMachine;
+
+    public HasQuarterState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertQuarter() {
+        System.out.println("You can't insert another quarter");
+    }
+
+    @Override
+    public void ejectQuarter() {
+        System.out.println("Quarter returned");
+        gumballMachine.setState(gumballMachine.getNoQuarterState());
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("You turned...");
+        gumballMachine.setState(gumballMachine.getSoldState());
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("No gumball dispensed");
+    }
+}
+
+class SoldState implements State {
+    private GumballMachine gumballMachine;
+
+    public SoldState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertQuarter() {
+        System.out.println("Please wait, we're already giving you a gumball");
+    }
+
+    @Override
+    public void ejectQuarter() {
+        System.out.println("Sorry, you already turned the crank");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("Turning twice doesn't get you another gumball!");
+    }
+
+    @Override
+    public void dispense() {
+        gumballMachine.releaseBall();
+        if (gumballMachine.getCount() > 0) {
+            gumballMachine.setState(gumballMachine.getNoQuarterState());
+        } else {
+            System.out.println("Oops, out of gumballs!");
+            gumballMachine.setState(gumballMachine.getSoldOutState());
+        }
+    }
+}
+
+class SoldOutState implements State {
+    private GumballMachine gumballMachine;
+
+    public SoldOutState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+    @Override
+    public void insertQuarter() {
+        System.out.println("Sorry, the machine is sold out");
+    }
+
+    @Override
+    public void ejectQuarter() {
+        System.out.println("You can't eject, you haven't inserted a quarter yet");
+    }
+
+    @Override
+    public void turnCrank() {
+        System.out.println("You turned, but there are no gumballs");
+    }
+
+    @Override
+    public void dispense() {
+        System.out.println("No gumball dispensed");
+    }
+}
+
+// GumballMachine class (Context class)
+
+class GumballMachine {
+    private State noQuarterState;
+    private State hasQuarterState;
+    private State soldState;
+    private State soldOutState;
+
+    private State state;
+    private int count = 0;
+
+    public GumballMachine(int numGumballs) {
+        noQuarterState = new NoQuarterState(this);
+        hasQuarterState = new HasQuarterState(this);
+        soldState = new SoldState(this);
+        soldOutState = new SoldOutState(this);
+
+        this.count = numGumballs;
+        if (numGumballs > 0) {
+            state = noQuarterState;
+        } else {
+            state = soldOutState;
+        }
+    }
+
+    // Other methods...
+
+    public void insertQuarter() {
+        state.insertQuarter();
+    }
+
+    public void ejectQuarter() {
+        state.ejectQuarter();
+    }
+
+    public void turnCrank() {
+        state.turnCrank();
+        state.dispense();
+    }
+
+    // Other methods...
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getNoQuarterState() {
+        return noQuarterState;
+    }
+
+    public State getHasQuarterState() {
+        return hasQuarterState;
+    }
+
+    public State getSoldState() {
+        return soldState;
+    }
+
+    public State getSoldOutState() {
+        return soldOutState;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void releaseBall() {
+        System.out.println("A gumball comes rolling out the slot...");
+        if (count != 0) {
+            count--;
+        }
+    }
+}
+
+// Example usage:
+
+public class GumballMachineTest {
+    public static void main(String[] args) {
+        GumballMachine gumballMachine = new GumballMachine(5);
+
+        gumballMachine.insertQuarter();
+        gumballMachine.turnCrank();
+
+        gumballMachine.insertQuarter();
+        gumballMachine.ejectQuarter();
+        gumballMachine.turnCrank();
+
+        gumballMachine.insertQuarter();
+        gumballMachine.turnCrank();
+        gumballMachine.insertQuarter();
+        gumballMachine.turnCrank();
+        gumballMachine.insertQuarter();
+        gumballMachine.turnCrank();
+        gumballMachine.insertQuarter();
+        gumballMachine.turnCrank();
+    }
+}
+
+*************************************************************************************************************************
+2. Write a python program to find all null values in a given dataset and remove them.
+import pandas
+# reading the CSV file
+csvFile = pandas.read_csv('employees.csv')
+# displaying the contents of the CSV file
+print(csvFile)
+count=csvFile.isnull()
+#displaying NULL content
+print(count)
+newdf = csvFile.dropna()
+print(newdf)

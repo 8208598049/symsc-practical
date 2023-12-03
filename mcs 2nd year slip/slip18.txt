@@ -1,0 +1,148 @@
+1.Write a JAVA Program to implement built-in support (java.util.Observable) Weather station with members temperature, humidity, pressure and methods mesurmentsChanged(), setMesurment(), getTemperature(), getHumidity(), getPressure()
+Solution:
+import java.util.Observable;
+import java.util.Observer;
+
+// WeatherData class represents the Weather Station
+class WeatherData extends Observable {
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    // Constructor
+    public WeatherData() {
+        // Initialize the WeatherData object
+        this.temperature = 0.0f;
+        this.humidity = 0.0f;
+        this.pressure = 0.0f;
+    }
+
+    // Method to notify observers when measurements have changed
+    public void measurementsChanged() {
+        setChanged();
+        notifyObservers();
+    }
+
+    // Method to set new measurements and trigger notification
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+
+    // Getter methods for temperature, humidity, and pressure
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+}
+
+// Display class represents an observer that displays weather data
+class Display implements Observer {
+    private WeatherData weatherData;
+
+    // Constructor
+    public Display(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof WeatherData) {
+            WeatherData weatherData = (WeatherData) o;
+            float temperature = weatherData.getTemperature();
+            float humidity = weatherData.getHumidity();
+            float pressure = weatherData.getPressure();
+
+            // Display the updated weather data
+            System.out.println("Temperature: " + temperature + "°C");
+            System.out.println("Humidity: " + humidity + "%");
+            System.out.println("Pressure: " + pressure + " hPa");
+            System.out.println("---------------------------");
+        }
+    }
+}
+
+public class WeatherStation {
+    public static void main(String[] args) {
+        // Create a WeatherData object (Weather Station)
+        WeatherData weatherData = new WeatherData();
+
+        // Create two displays (observers) for weather data
+        Display display1 = new Display(weatherData);
+        Display display2 = new Display(weatherData);
+
+        // Simulate updates to weather data
+        weatherData.setMeasurements(25.5f, 65.0f, 1013.2f);
+        weatherData.setMeasurements(28.0f, 70.5f, 1010.0f);
+    }
+}
+OUTPUT==
+C:\Users\DELL\Desktop\java>java WeatherStation
+Temperature: 25.5°C
+Humidity: 65.0%
+Pressure: 1013.2 hPa
+---------------------------
+Temperature: 25.5°C
+Humidity: 65.0%
+Pressure: 1013.2 hPa
+---------------------------
+Temperature: 28.0°C
+Humidity: 70.5%
+Pressure: 1010.0 hPa
+---------------------------
+Temperature: 28.0°C
+Humidity: 70.5%
+Pressure: 1010.0 hPa
+
+*************************************************************************************************************************
+
+2.Write a python program to implement Polynomial Linear Regression for given dataset
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+# Importing the dataset
+datas = pd.read_csv('data.csv')
+datas
+# Dividing the dataset into 2 components
+X = datas.iloc[:, 1:2].values
+y = datas.iloc[:, 2].values
+# Fitting Linear Regression to the dataset
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+lin.fit(X, y)
+# Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree = 4)
+X_poly = poly.fit_transform(X)
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+lin2.fit(X_poly, y)
+# Visualising the Linear Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin.predict(X), color = 'red')
+plt.title('Linear Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+# Visualising the Polynomial Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin2.predict(poly.fit_transform(X)), color = 'red')
+plt.title('Polynomial Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+
+*************************************************************************************************************************
+
+

@@ -1,0 +1,175 @@
+Write a Java Program to implement Observer Design Pattern for number conversion.
+Accept a number in Decimal form and represent it in Hexadecimal, Octal and Binary. Change the Number and it reflects in other forms also
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Subject interface
+interface Subject {
+    void addObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();
+}
+
+// Observer interface
+interface Observer {
+    void update(int decimalNumber);
+}
+
+// Concrete subject
+class NumberConverter implements Subject {
+    private int decimalNumber;
+    private List<Observer> observers = new ArrayList<>();
+
+    public void setDecimalNumber(int decimalNumber) {
+        this.decimalNumber = decimalNumber;
+        notifyObservers();
+    }
+
+    public int getDecimalNumber() {
+        return decimalNumber;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(decimalNumber);
+        }
+    }
+}
+
+// Concrete observers
+class HexadecimalObserver implements Observer {
+    private Subject subject;
+
+    public HexadecimalObserver(Subject subject) {
+        this.subject = subject;
+        subject.addObserver(this);
+    }
+
+    @Override
+    public void update(int decimalNumber) {
+        System.out.println("Hexadecimal: " + Integer.toHexString(decimalNumber));
+    }
+}
+
+class OctalObserver implements Observer {
+    private Subject subject;
+
+    public OctalObserver(Subject subject) {
+        this.subject = subject;
+        subject.addObserver(this);
+    }
+
+    @Override
+    public void update(int decimalNumber) {
+        System.out.println("Octal: " + Integer.toOctalString(decimalNumber));
+    }
+}
+
+class BinaryObserver implements Observer {
+    private Subject subject;
+
+    public BinaryObserver(Subject subject) {
+        this.subject = subject;
+        subject.addObserver(this);
+    }
+
+    @Override
+    public void update(int decimalNumber) {
+        System.out.println("Binary: " + Integer.toBinaryString(decimalNumber));
+    }
+}
+
+// Client code
+public class ObserverPatternExample {
+    public static void main(String[] args) {
+        NumberConverter numberConverter = new NumberConverter();
+
+        HexadecimalObserver hexadecimalObserver = new HexadecimalObserver(numberConverter);
+        OctalObserver octalObserver = new OctalObserver(numberConverter);
+        BinaryObserver binaryObserver = new BinaryObserver(numberConverter);
+
+        numberConverter.setDecimalNumber(10);
+        numberConverter.setDecimalNumber(20);
+        numberConverter.setDecimalNumber(42);
+    }
+}
+
+*************************************************************************************************************************
+
+2.Write a python program to Implement Simple Linear Regression for predicting Salary .
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+from sklearn.preprocessing import StandardScaler
+df = pd.read_csv('Salary_data.csv')
+print(df.to_string())
+des=df.describe()
+print(des)
+x=df['YearsExp']
+y=df['salary']
+#plt.scatter(x,y)
+#plt.show()
+x=df['YearsExp'].values.reshape(-1,1)
+y=df['salary'].values.reshape(-1,1)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+sc=StandardScaler()
+sc.fit(x_train)
+x_train=sc.transform(x_train)
+x_test=sc.transform(x_test)
+y_train=sc.transform(y_train)
+y_test=sc.transform(y_test)
+LR=LinearRegression()
+LR.fit(x_train,y_train)
+print("Intercept",LR.intercept_)
+print("Coefficient",LR.coef_)
+y_pred=LR.predict(x_test)
+plt.scatter(x_train,y_train)
+plt.plot(x_test,y_pred,color='red')
+plt.title("Simple Regression")
+plt.xlabel("YearExperience")
+plt.ylabel("Salary")
+plt.show()
+data=pd.DataFrame({'Actual':y_test.flatten(),'predicted':y_pred.flatten()})
+print(data)
+y_pred2=LR.predict([[3]])
+print(y_pred2)
+
+*************************************************************************************************************************
+
+3.Create a js file named main.js for event-driven application. There should be a main loop that listens for events, and then triggers a callback function when one of those events is detected.
+//import event modules
+var events = require('events');
+
+//create an eventEmitter object
+var eventEmitter = new events.EventEmitter();
+
+//create an event handler
+var connectHandler = function connected(s){
+    console.log('Its',s);
+}
+
+//Bind the connection event with the Handler
+eventEmitter.on('data_received',function(name){
+    console.log(name,"Understood event -Driven");
+});
+eventEmitter.emit('data_received',"Divya Meher");
+
+eventEmitter.on('connection',connectHandler);
+eventEmitter.emit('connection',"SIMPLE SOLUTION")
+
+console.log("program Ended");

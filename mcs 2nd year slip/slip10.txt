@@ -1,0 +1,159 @@
+1.Write a Java Program to implement Strategy Pattern for Duck Behavior. Create instance variable that holds current state of Duck from there, we just need to handle all Flying Behaviors and Quack Behavior
+
+// Define the QuackBehavior interface
+interface QuackBehavior {
+    void quack();
+}
+
+// Concrete implementations of QuackBehavior
+class Quack implements QuackBehavior {
+    @Override
+    public void quack() {
+        System.out.println("Quack");
+    }
+}
+
+class Squeak implements QuackBehavior {
+    @Override
+    public void quack() {
+        System.out.println("Squeak");
+    }
+}
+
+class MuteQuack implements QuackBehavior {
+    @Override
+    public void quack() {
+        System.out.println("<< Silence >>");
+    }
+}
+
+// Define the FlyBehavior interface
+interface FlyBehavior {
+    void fly();
+}
+
+// Concrete implementations of FlyBehavior
+class FlyWithWings implements FlyBehavior {
+    @Override
+    public void fly() {
+        System.out.println("Flying with wings");
+    }
+}
+
+class FlyNoWay implements FlyBehavior {
+    @Override
+    public void fly() {
+        System.out.println("I can't fly");
+    }
+}
+
+// Duck class using the Strategy Pattern
+abstract class Duck {
+    private FlyBehavior flyBehavior;
+    private QuackBehavior quackBehavior;
+
+    public Duck(FlyBehavior flyBehavior, QuackBehavior quackBehavior) {
+        this.flyBehavior = flyBehavior;
+        this.quackBehavior = quackBehavior;
+    }
+
+    public void performFly() {
+        flyBehavior.fly();
+    }
+
+    public void performQuack() {
+        quackBehavior.quack();
+    }
+
+    public void setFlyBehavior(FlyBehavior flyBehavior) {
+        this.flyBehavior = flyBehavior;
+    }
+
+    public void setQuackBehavior(QuackBehavior quackBehavior) {
+        this.quackBehavior = quackBehavior;
+    }
+
+    abstract void display();
+}
+
+// Concrete Duck implementations
+class MallardDuck extends Duck {
+    public MallardDuck() {
+        super(new FlyWithWings(), new Quack());
+    }
+
+    @Override
+    void display() {
+        System.out.println("I'm a Mallard Duck");
+    }
+}
+
+class RubberDuck extends Duck {
+    public RubberDuck() {
+        super(new FlyNoWay(), new Squeak());
+    }
+
+    @Override
+    void display() {
+        System.out.println("I'm a Rubber Duck");
+    }
+}
+
+// Test the Duck behaviors
+public class DuckSimulator {
+    public static void main(String[] args) {
+        Duck mallardDuck = new MallardDuck();
+        mallardDuck.display();
+        mallardDuck.performFly();
+        mallardDuck.performQuack();
+
+        System.out.println();
+
+        Duck rubberDuck = new RubberDuck();
+        rubberDuck.display();
+        rubberDuck.performFly();
+        rubberDuck.performQuack();
+    }
+}
+
+**************************************************************************************************************************************
+
+2.Write a Python program to prepare Scatter Plot for Iris Dataset
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+data = pd.read_csv("Iris.csv")
+print (data.head(10))
+x=data["sepal_length"]
+y=data["petal_length"]
+plt.scatter(x,y)
+plt.show()
+
+**************************************************************************************************************************************
+
+3.Create a node.js file that Insert Multiple Records in "student" table, and display the result object on console.
+var mysql = require('mysql');
+
+var con = mysql.createConnection(
+    {
+        host:"localhost",
+        user:"root",
+        password:"password",
+        database:"db"
+    });
+
+    con.connect(function(err)
+    {
+        if (err) throw err;
+        console.log("connected");
+        var sql = 'insert into student values(2,"sham"),(3,"seeta"),(4,"geeta")';
+        con.query(sql, function (err, result,fields){
+            if (err) throw err;
+            console.log(result);
+          });
+          var sql1 = "select * from student";
+          con.query(sql1, function (err, result,fields){
+            if (err) throw err;
+            console.log(result);
+          });
+    });

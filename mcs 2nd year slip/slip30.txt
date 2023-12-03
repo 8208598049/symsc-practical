@@ -1,0 +1,122 @@
+.Write a Java Program to implement Factory method for Pizza Store with createPizza(), 
+orederPizza(), prepare(), Bake(), cut(), box(). Use this to create variety of pizza’s like 
+NyStyleCheesePizza, ChicagoStyleCheesePizza etc.
+Solution:
+import java.util.Scanner;
+abstract class Pizza {
+ String name;
+ public void prepare() {
+     System.out.println("Preparing " + name);
+ }
+ public void bake() {
+     System.out.println("Baking " + name);
+ }
+ public void cut() {
+     System.out.println("Cutting " + name);
+ }
+ public void box() {
+     System.out.println("Boxing " + name);
+ }
+}
+//Concrete Pizza classes
+class NYStyleCheesePizza extends Pizza {
+ public NYStyleCheesePizza() {
+     name = "NY Style Cheese Pizza";
+ }
+}
+class ChicagoStyleCheesePizza extends Pizza {
+ public ChicagoStyleCheesePizza() {
+     name = "Chicago Style Cheese Pizza";
+ }
+}
+//PizzaStore with Factory Method
+abstract class PizzaStore {
+ public Pizza orderPizza(String type) {
+     Pizza pizza = createPizza(type);
+     pizza.prepare();
+     pizza.bake();
+     pizza.cut();
+     pizza.box();
+     return pizza;
+ }
+ protected abstract Pizza createPizza(String type);
+}
+class NYPizzaStore extends PizzaStore {
+ @Override
+ protected Pizza createPizza(String type) {
+     if (type.equals("cheese")) {
+         return new NYStyleCheesePizza();
+     } else {
+         // Add more pizza types as needed
+         return null;
+     }
+ }
+}
+class ChicagoPizzaStore extends PizzaStore {
+ @Override
+ protected Pizza createPizza(String type) {
+     if (type.equals("cheese")) {
+         return new ChicagoStyleCheesePizza();
+     } else {
+         // Add more pizza types as needed
+         return null;
+     }
+ }
+}
+public class PizzaTest {
+ public static void main(String[] args) {
+     PizzaStore nyStore = new NYPizzaStore();
+     PizzaStore chicagoStore = new ChicagoPizzaStore();
+     Pizza nyCheesePizza = nyStore.orderPizza("cheese");
+     System.out.println("Ordered a " + nyCheesePizza.name + "\n");
+     Pizza chicagoCheesePizza = chicagoStore.orderPizza("cheese");
+     System.out.println("Ordered a " + chicagoCheesePizza.name + "\n");
+    
+     Scanner scanner = new Scanner(System.in);
+     System.out.println("Welcome to the Pizza Store!");
+     System.out.print("Enter the type of pizza you want (cheese): ");
+     String pizzaType = scanner.nextLine();
+     Pizza pizza = null;
+     if (pizzaType.equalsIgnoreCase("cheese")) {
+         pizza = nyStore.orderPizza(pizzaType);
+     } else if (pizzaType.equalsIgnoreCase("pepperoni") || pizzaType.equalsIgnoreCase("veggie")) {
+         pizza = chicagoStore.orderPizza(pizzaType);
+     } else {
+         System.out.println("Sorry, we don't have that pizza type.");
+     }
+
+     if (pizza != null) {
+         System.out.println("Ordered a " + pizza.name + "\n");
+     }
+ }
+
+ }
+Output:
+C:\Users\preranabhosale\Desktop\example>javac PizzaTest.java
+
+C:\Users\preranabhosale\Desktop\example>java PizzaTest
+Preparing NY Style Cheese Pizza
+Baking NY Style Cheese Pizza
+Cutting NY Style Cheese Pizza
+Boxing NY Style Cheese Pizza
+Ordered a NY Style Cheese Pizza
+
+Preparing Chicago Style Cheese Pizza
+Baking Chicago Style Cheese Pizza
+Cutting Chicago Style Cheese Pizza
+Boxing Chicago Style Cheese Pizza
+Ordered a Chicago Style Cheese Pizza
+
+Welcome to the Pizza Store!
+Enter the type of pizza you want (cheese): cheese
+Preparing NY Style Cheese Pizza
+Baking NY Style Cheese Pizza
+Cutting NY Style Cheese Pizza
+Boxing NY Style Cheese Pizza
+Ordered a NY Style Cheese Pizza
+
+
+*************************************************************************************************************************
+
+2.Write a python program to implement Linear SVM. # Import the Libraries import numpy as np import matplotlib.pyplot as plt from sklearn import svm, datasets # Import some Data from the iris Data Set iris = datasets.load_iris() # Take only the first two features of Data. # To avoid the slicing, Two-Dim Dataset can be used X = iris.data[:, :2] y = iris.target # C is the SVM regularization parameter C = 1.0 # Create an Instance of SVM and Fit out the data. # Data is not scaled so as to be able to plot the support vectors svc = svm.SVC(kernel ='linear', C = 1).fit(X, y) # create a mesh to plot x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1 y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1 h = (x_max / x_min)/100 xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h)) # Plot the data for Proper Visual Representation plt.subplot(1, 1, 1) # Predict the result by giving Data to the model Z = svc.predict(np.c_[xx.ravel(), yy.ravel()]) Z = Z.reshape(xx.shape) plt.contourf(xx, yy, Z, cmap = plt.cm.Paired, alpha = 0.8)
+plt.scatter(X[:, 0], X[:, 1], c = y, cmap = plt.cm.Paired) plt.xlabel('Sepal length') plt.ylabel('Sepal width') plt.xlim(xx.min(), xx.max()) plt.title('SVC with linear kernel') # Output the Plot plt.show()

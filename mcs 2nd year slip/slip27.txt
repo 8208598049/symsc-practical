@@ -1,0 +1,94 @@
+Write a Java Program to implement Abstract Factory Pattern for Shape interface.
+
+interface Shape {
+    void draw();
+}
+
+// Concrete implementations of Shape interface
+class Circle implements Shape {
+    @Override
+    public void draw() {
+        System.out.println("Drawing Circle");
+    }
+}
+
+class Square implements Shape {
+    @Override
+    public void draw() {
+        System.out.println("Drawing Square");
+    }
+}
+
+// Abstract Factory interface
+interface ShapeFactory {
+    Shape createShape();
+}
+
+// Concrete implementations of ShapeFactory interface
+class CircleFactory implements ShapeFactory {
+    @Override
+    public Shape createShape() {
+        return new Circle();
+    }
+}
+
+class SquareFactory implements ShapeFactory {
+    @Override
+    public Shape createShape() {
+        return new Square();
+    }
+}
+
+// Client class using Abstract Factory Pattern
+public class AbstractFactoryPatternExample {
+    public static void main(String[] args) {
+        // Creating a Circle using CircleFactory
+        ShapeFactory circleFactory = new CircleFactory();
+        Shape circle = circleFactory.createShape();
+        circle.draw();
+
+        // Creating a Square using SquareFactory
+        ShapeFactory squareFactory = new SquareFactory();
+        Shape square = squareFactory.createShape();
+        square.draw();
+    }
+}
+
+*************************************************************************************************************************
+
+2.Write a python program to implement Polynomial Linear Regression for given dataset
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+# Importing the dataset
+datas = pd.read_csv('data.csv')
+datas
+# Dividing the dataset into 2 components
+X = datas.iloc[:, 1:2].values
+y = datas.iloc[:, 2].values
+# Fitting Linear Regression to the dataset
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+lin.fit(X, y)
+# Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree = 4)
+X_poly = poly.fit_transform(X)
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+lin2.fit(X_poly, y)
+# Visualising the Linear Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin.predict(X), color = 'red')
+plt.title('Linear Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+# Visualising the Polynomial Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin2.predict(poly.fit_transform(X)), color = 'red')
+plt.title('Polynomial Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()

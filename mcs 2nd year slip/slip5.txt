@@ -1,0 +1,151 @@
+.Write a Java Program to implement Adapter pattern for Enumeration iterator              
+Solution.                                     
+  import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
+
+// Enumeration to Iterator Adapter
+class EnumerationIteratorAdapter<T> implements Iterator<T> {
+    private Enumeration<T> enumeration;
+
+    public EnumerationIteratorAdapter(Enumeration<T> enumeration) {
+        this.enumeration = enumeration;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return enumeration.hasMoreElements();
+    }
+
+    @Override
+    public T next() {
+        return enumeration.nextElement();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("remove() method is not supported.");
+    }
+}
+
+// Example usage
+public class Main {
+    public static void main(String[] args) {
+        // Create an Enumeration
+        Enumeration<String> enumeration = new Vector<>(Arrays.asList("Apple", "Banana", "Orange")).elements();
+
+        // Create an Iterator using the Adapter
+        Iterator<String> iterator = new EnumerationIteratorAdapter<>(enumeration);
+
+        // Iterate over the elements using the Iterator
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+}
+
+Output : Apple
+Banana
+Orange
+
+**************************************************************************************************************************************
+
+2.Write a python program to implement Multiple Linear Regression for given dataset
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+from sklearn.preprocessing import StandardScaler
+df = pd.read_csv("data.csv")
+data=df.head()
+print(data)
+x= df[['Weight','Volume']]
+y= df['CO2']
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+MLR=LinearRegression()
+MLR.fit(x_train,y_train)
+print("Intercept",MLR.intercept_)
+print("Coefficient",MLR.coef_)
+#predict the CO2 emission of a car where the weight is 2300g, and the volume is 1300ccm:
+predictedCO2 = MLR.predict([[1500, 1140]])
+print(predictedCO2)
+Q6. Write a python program to implement Polynomial Linear Regression for given dataset
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+# Importing the dataset
+datas = pd.read_csv('data.csv')
+datas
+# Dividing the dataset into 2 components
+X = datas.iloc[:, 1:2].values
+y = datas.iloc[:, 2].values
+# Fitting Linear Regression to the dataset
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+lin.fit(X, y)
+# Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree = 4)
+X_poly = poly.fit_transform(X)
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+lin2.fit(X_poly, y)
+# Visualising the Linear Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin.predict(X), color = 'red')
+plt.title('Linear Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+# Visualising the Polynomial Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin2.predict(poly.fit_transform(X)), color = 'red')
+plt.title('Polynomial Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+
+**************************************************************************************************************************************
+
+3.Using nodejs create a web page to read two file names from user and append contents of first file into second file
+Q5.js
+var http = require('http');
+var fs = require('fs');
+var formidable = require('formidable');
+
+http.createServer(function(req,res){
+    if(req.url == '/'){
+        res.writeHead(200,{'content-type':'text/html'});
+        res.write('<form action = "fapp" method="post" enctype = "multipart/form-data">');
+        res.write('<h1>SELECT TWO FILES</h1>');
+        res.write('<input type = "file" name ="rf"><br>');
+        res.write('<input type = "file" name = "wf"><br>');
+        res.write('<input type = "submit">');
+        res.end();
+    }
+    else if(req.url =='/fapp'){
+        var form = new formidable.IncomingForm();
+        form.parse(req,function(err,fields,files){
+            if(!err){
+                var w = fs.createWriteStream(files.wf.originalFilename,{flags:'a'});
+                var r = fs.createReadStream(files.rf.originalFilename);
+                w.on('close',function(){
+                    console.log("Writing Done");
+                });
+                r.pipe(w);
+                res.write(files.rf.originalFilename);
+                res.end("Append Successfully");
+
+            }
+            else{res.write("error in writing");}
+        });
+    }
+    else{
+        res.end("page not found");
+    }
+
+}).listen(8001);

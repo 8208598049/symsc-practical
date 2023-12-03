@@ -1,0 +1,178 @@
+Write a Java Program to implement Command Design Pattern for Command Interface
+with execute() . Use this to create variety of commands for LightOnCommand,
+LightOffCommand, GarageDoorUpCommand, StereoOnWithCDComman.
+
+// Command interface
+interface Command {
+    void execute();
+}
+
+// Concrete Command classes
+class Light {
+    void turnOn() {
+        System.out.println("Light is ON");
+    }
+
+    void turnOff() {
+        System.out.println("Light is OFF");
+    }
+}
+
+class LightOnCommand implements Command {
+    private Light light;
+
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOn();
+    }
+}
+
+class LightOffCommand implements Command {
+    private Light light;
+
+    public LightOffCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOff();
+    }
+}
+
+class GarageDoor {
+    void up() {
+        System.out.println("Garage door is UP");
+    }
+}
+
+class GarageDoorUpCommand implements Command {
+    private GarageDoor garageDoor;
+
+    public GarageDoorUpCommand(GarageDoor garageDoor) {
+        this.garageDoor = garageDoor;
+    }
+
+    @Override
+    public void execute() {
+        garageDoor.up();
+    }
+}
+
+class Stereo {
+    void onWithCD() {
+        System.out.println("Stereo is ON with CD");
+    }
+}
+
+class StereoOnWithCDCommand implements Command {
+    private Stereo stereo;
+
+    public StereoOnWithCDCommand(Stereo stereo) {
+        this.stereo = stereo;
+    }
+
+    @Override
+    public void execute() {
+        stereo.onWithCD();
+    }
+}
+
+// Client class
+class RemoteControl {
+    private Command command;
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void pressButton() {
+        command.execute();
+    }
+}
+
+// Main class to test the Command Design Pattern
+public class CommandPatternExample {
+    public static void main(String[] args) {
+        // Create instances of devices
+        Light livingRoomLight = new Light();
+        GarageDoor garageDoor = new GarageDoor();
+        Stereo stereo = new Stereo();
+
+        // Create instances of ConcreteCommand classes
+        LightOnCommand lightOn = new LightOnCommand(livingRoomLight);
+        LightOffCommand lightOff = new LightOffCommand(livingRoomLight);
+        GarageDoorUpCommand garageDoorUp = new GarageDoorUpCommand(garageDoor);
+        StereoOnWithCDCommand stereoOnWithCD = new StereoOnWithCDCommand(stereo);
+
+        // Create RemoteControl
+        RemoteControl remote = new RemoteControl();
+
+        // Set commands for the remote
+        remote.setCommand(lightOn);
+        remote.pressButton();
+
+        remote.setCommand(garageDoorUp);
+        remote.pressButton();
+
+        remote.setCommand(stereoOnWithCD);
+        remote.pressButton();
+
+        remote.setCommand(lightOff);
+        remote.pressButton();
+    }
+}
+
+**************************************************************************************************************************************
+
+2.Write a python program to find all null values in a given dataset and remove them.
+import pandas
+# reading the CSV file
+csvFile = pandas.read_csv('employees.csv')
+# displaying the contents of the CSV file
+print(csvFile)
+count=csvFile.isnull()
+#displaying NULL content
+print(count)
+newdf = csvFile.dropna()
+print(newdf)
+
+
+**************************************************************************************************************************************
+
+3.Write node js script to interact with the filesystem, and serve a web page from a file .
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const server = http.createServer((req, res) => {
+  // Set the content type to HTML
+  res.setHeader('Content-Type', 'text/html');
+
+  // Get the file path for the requested URL
+  const filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // If the file does not exist, return a 404 response
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('File not found!');
+      return;
+    }
+
+    // Read the file and send it as the response
+    fs.createReadStream(filePath).pipe(res);
+  });
+});
+
+const PORT = 3000;
+
+server.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}/`);
+});

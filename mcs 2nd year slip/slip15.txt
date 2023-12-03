@@ -1,0 +1,158 @@
+Write a Java Program to implement Facade Design Pattern for HomeTheater
+
+class DVDPlayer {
+    void on() {
+        System.out.println("DVD Player is ON");
+    }
+
+    void play(String movie) {
+        System.out.println("Playing movie: " + movie);
+    }
+
+    void off() {
+        System.out.println("DVD Player is OFF");
+    }
+}
+
+class Projector {
+    void on() {
+        System.out.println("Projector is ON");
+    }
+
+    void setInput(DVDPlayer dvdPlayer) {
+        System.out.println("Setting projector input to DVD Player");
+    }
+
+    void off() {
+        System.out.println("Projector is OFF");
+    }
+}
+
+class SoundSystem {
+    void on() {
+        System.out.println("Sound System is ON");
+    }
+
+    void setVolume(int volume) {
+        System.out.println("Setting volume to " + volume);
+    }
+
+    void off() {
+        System.out.println("Sound System is OFF");
+    }
+}
+
+class Lights {
+    void dim() {
+        System.out.println("Dimming the lights");
+    }
+
+    void brighten() {
+        System.out.println("Brightening the lights");
+    }
+}
+
+// Facade
+class HomeTheaterFacade {
+    private DVDPlayer dvdPlayer;
+    private Projector projector;
+    private SoundSystem soundSystem;
+    private Lights lights;
+
+    public HomeTheaterFacade(DVDPlayer dvdPlayer, Projector projector, SoundSystem soundSystem, Lights lights) {
+        this.dvdPlayer = dvdPlayer;
+        this.projector = projector;
+        this.soundSystem = soundSystem;
+        this.lights = lights;
+    }
+
+    void watchMovie(String movie) {
+        System.out.println("Get ready to watch a movie...");
+        lights.dim();
+        dvdPlayer.on();
+        dvdPlayer.play(movie);
+        projector.on();
+        projector.setInput(dvdPlayer);
+        soundSystem.on();
+        soundSystem.setVolume(10);
+    }
+
+    void endMovie() {
+        System.out.println("Shutting down the home theater...");
+        lights.brighten();
+        dvdPlayer.off();
+        projector.off();
+        soundSystem.off();
+    }
+}
+
+// Client code
+public class Main {
+    public static void main(String[] args) {
+        DVDPlayer dvdPlayer = new DVDPlayer();
+        Projector projector = new Projector();
+        SoundSystem soundSystem = new SoundSystem();
+        Lights lights = new Lights();
+
+        HomeTheaterFacade homeTheater = new HomeTheaterFacade(dvdPlayer, projector, soundSystem, lights);
+
+        // Watch a movie
+        homeTheater.watchMovie("Inception");
+
+        // End the movie
+        homeTheater.endMovie();
+    }
+}
+
+*************************************************************************************************************************
+
+2.Write a python program to make Categorical values in numeric format for a given dataset
+import pandas as pd
+cars = pd.read_csv('data.csv')
+print(cars.to_string())
+ohe_cars = pd.get_dummies(cars[['Car']])
+print(ohe_cars.to_string())
+
+*************************************************************************************************************************
+
+3.Write node js script to build Your Own Node.js Module. Use require (‘http’) module is a built-in Node module that invokes the functionality of the HTTP library to create a local server. Also use the export statement to make functions in your module available externally. Create a new text file to contain the functions in your module called, “modules.js” and add this function to return today’s date and time.
+modules.js
+function datetime()
+{
+    let dt = new Date();
+    //current date
+    let date = ("0"+dt.getDate()).slice(-2);
+
+    //current month
+    let month = ("0"+ (dt.getMonth()+1)).slice(-2);
+
+    //current year
+    let year = dt.getFullYear();
+
+    //current hours
+    let hours = dt.getHours();
+
+    //current minutes
+    let minutes = dt.getMinutes();
+
+    //current seconds
+    let seconds = dt.getSeconds();
+
+    var output = year + "-" +month + "-" + date + " " + hours +":"+minutes+":"+seconds;
+    return output;
+}
+module.exports = {datetime}
+
+Q15.js
+var http = require('http');
+var dt = require('./modules');
+
+var server = http.createServer(function(req,res){
+    res.writeHead(200,{'content-type':'text/html'});
+    const result = dt.datetime();
+    res.write('current date and time is ');
+    res.write(result);
+    res.end();
+
+});
+server.listen(1234);

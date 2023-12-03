@@ -1,0 +1,198 @@
+1.Write a Java Program to implement Strategy Pattern for Duck Behavior. Create instance variable that holds current state of Duck from there, we just need to handle all Flying Behaviors and Quack Behavior
+
+// Define the QuackBehavior interface
+interface QuackBehavior {
+    void quack();
+}
+
+// Concrete implementations of QuackBehavior
+class Quack implements QuackBehavior {
+    @Override
+    public void quack() {
+        System.out.println("Quack");
+    }
+}
+
+class Squeak implements QuackBehavior {
+    @Override
+    public void quack() {
+        System.out.println("Squeak");
+    }
+}
+
+class MuteQuack implements QuackBehavior {
+    @Override
+    public void quack() {
+        System.out.println("<< Silence >>");
+    }
+}
+
+// Define the FlyBehavior interface
+interface FlyBehavior {
+    void fly();
+}
+
+// Concrete implementations of FlyBehavior
+class FlyWithWings implements FlyBehavior {
+    @Override
+    public void fly() {
+        System.out.println("Flying with wings");
+    }
+}
+
+class FlyNoWay implements FlyBehavior {
+    @Override
+    public void fly() {
+        System.out.println("I can't fly");
+    }
+}
+
+// Duck class using the Strategy Pattern
+abstract class Duck {
+    private FlyBehavior flyBehavior;
+    private QuackBehavior quackBehavior;
+
+    public Duck(FlyBehavior flyBehavior, QuackBehavior quackBehavior) {
+        this.flyBehavior = flyBehavior;
+        this.quackBehavior = quackBehavior;
+    }
+
+    public void performFly() {
+        flyBehavior.fly();
+    }
+
+    public void performQuack() {
+        quackBehavior.quack();
+    }
+
+    public void setFlyBehavior(FlyBehavior flyBehavior) {
+        this.flyBehavior = flyBehavior;
+    }
+
+    public void setQuackBehavior(QuackBehavior quackBehavior) {
+        this.quackBehavior = quackBehavior;
+    }
+
+    abstract void display();
+}
+
+// Concrete Duck implementations
+class MallardDuck extends Duck {
+    public MallardDuck() {
+        super(new FlyWithWings(), new Quack());
+    }
+
+    @Override
+    void display() {
+        System.out.println("I'm a Mallard Duck");
+    }
+}
+
+class RubberDuck extends Duck {
+    public RubberDuck() {
+        super(new FlyNoWay(), new Squeak());
+    }
+
+    @Override
+    void display() {
+        System.out.println("I'm a Rubber Duck");
+    }
+}
+
+// Test the Duck behaviors
+public class DuckSimulator {
+    public static void main(String[] args) {
+        Duck mallardDuck = new MallardDuck();
+        mallardDuck.display();
+        mallardDuck.performFly();
+        mallardDuck.performQuack();
+
+        System.out.println();
+
+        Duck rubberDuck = new RubberDuck();
+        rubberDuck.display();
+        rubberDuck.performFly();
+        rubberDuck.performQuack();
+    }
+}
+
+*************************************************************************************************************************
+
+2.Write a python program to implement Multiple Linear Regression for given dataset
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+from sklearn.preprocessing import StandardScaler
+df = pd.read_csv("data.csv")
+data=df.head()
+print(data)
+x= df[['Weight','Volume']]
+y= df['CO2']
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+MLR=LinearRegression()
+MLR.fit(x_train,y_train)
+print("Intercept",MLR.intercept_)
+print("Coefficient",MLR.coef_)
+#predict the CO2 emission of a car where the weight is 2300g, and the volume is 1300ccm:
+predictedCO2 = MLR.predict([[1500, 1140]])
+print(predictedCO2)
+Q6. Write a python program to implement Polynomial Linear Regression for given dataset
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+# Importing the dataset
+datas = pd.read_csv('data.csv')
+datas
+# Dividing the dataset into 2 components
+X = datas.iloc[:, 1:2].values
+y = datas.iloc[:, 2].values
+# Fitting Linear Regression to the dataset
+from sklearn.linear_model import LinearRegression
+lin = LinearRegression()
+lin.fit(X, y)
+# Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree = 4)
+X_poly = poly.fit_transform(X)
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+lin2.fit(X_poly, y)
+# Visualising the Linear Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin.predict(X), color = 'red')
+plt.title('Linear Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+# Visualising the Polynomial Regression results
+plt.scatter(X, y, color = 'blue')
+plt.plot(X, lin2.predict(poly.fit_transform(X)), color = 'red')
+plt.title('Polynomial Regression')
+plt.xlabel('Temperature')
+plt.ylabel('Pressure')
+plt.show()
+
+*************************************************************************************************************************
+
+3.Create a Node.js file that demonstrates create database and table in MySQL
+
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "password"
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+  con.query("CREATE DATABASE db", function (err, result) {
+    if (err) throw err;
+    console.log("Database created");
+  });
+});

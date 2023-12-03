@@ -1,0 +1,67 @@
+Write a Java Program to implement an Adapter design pattern in mobile charger. Define two classes – Volt (to measure volts) and Socket (producing constant volts of 120V). Build an adapter that can produce 3 volts, 12 volts and default 120 volts. Implements Adapter pattern using Class Adapter
+
+// Volt interface to represent volts
+interface Volt {
+    int getVolts();
+}
+
+// Socket class producing constant volts of 120V
+class Socket implements Volt {
+    @Override
+    public int getVolts() {
+        return 120;
+    }
+}
+
+// Adapter class to produce 3 volts and 12 volts using Class Adapter pattern
+class VoltAdapter extends Socket {
+    @Override
+    public int getVolts() {
+        // Using inheritance to reuse the functionality of Socket class
+        int volts = super.getVolts();
+        
+        // Adapt the volts to 3 volts
+        return convertVolts(volts, 40);
+    }
+
+    // Additional method to adapt volts to the desired voltage
+    private int convertVolts(int volts, int divisor) {
+        return volts / divisor;
+    }
+}
+
+// MobileCharger class expecting a Volt interface
+class MobileCharger {
+    public void charge(Volt volt) {
+        System.out.println("Charging with " + volt.getVolts() + " volts");
+    }
+}
+
+// Main class to demonstrate the Adapter pattern
+public class AdapterPatternExample {
+    public static void main(String[] args) {
+        // Using the existing Socket class
+        Socket socket = new Socket();
+        MobileCharger mobileCharger = new MobileCharger();
+        mobileCharger.charge(socket);
+
+        // Using the VoltAdapter to adapt Socket to provide 3 volts
+        VoltAdapter voltAdapter = new VoltAdapter();
+        mobileCharger.charge(voltAdapter);
+    }
+}
+
+**************************************************************************************************************************************
+
+2.Write a Python program to prepare Scatter Plot for Iris Dataset
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+data = pd.read_csv("Iris.csv")
+print (data.head(10))
+x=data["sepal_length"]
+y=data["petal_length"]
+plt.scatter(x,y)
+plt.show()
+
+**************************************************************************************************************************************

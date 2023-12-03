@@ -1,0 +1,122 @@
+2.Write a Java Program to implement Singleton pattern for multithreading. 
+
+public class SingletonDemo 
+{
+    public static void main(String[] args) {
+       
+        Thread thread1 = new Thread(() -> {
+            SingletonDoubleCheckedLocking singleton = SingletonDoubleCheckedLocking.getInstance();
+            System.out.println("Thread 1 (Double-Checked Locking): " + singleton.hashCode());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            SingletonDoubleCheckedLocking singleton = SingletonDoubleCheckedLocking.getInstance();
+            System.out.println("Thread 2 (Double-Checked Locking): " + singleton.hashCode());
+        });
+
+        thread1.start();
+        thread2.start();
+
+      
+        SingletonEnum instance1 = SingletonEnum.INSTANCE;
+        SingletonEnum instance2 = SingletonEnum.INSTANCE;
+
+        System.out.println("Instance 1 (Enum): " + instance1.hashCode());
+        System.out.println("Instance 2 (Enum): " + instance2.hashCode());
+    }
+}
+
+class SingletonDoubleCheckedLocking {
+    private static volatile SingletonDoubleCheckedLocking instance;
+
+    private SingletonDoubleCheckedLocking() { }
+
+    public static SingletonDoubleCheckedLocking getInstance() {
+        if (instance == null) {
+            synchronized (SingletonDoubleCheckedLocking.class) {
+                if (instance == null) {
+                    instance = new SingletonDoubleCheckedLocking();
+                }
+            }
+        }
+        return instance;
+    }
+}
+
+enum SingletonEnum {
+    INSTANCE;
+
+    
+
+    public void doSomething() {
+       
+    }
+}
+
+Output: Instance 1 (Enum): 1247233941
+Instance 2 (Enum): 1247233941
+Thread 1 (Double-Checked Locking): 675709618
+Thread 2 (Double-Checked Locking): 675709618
+
+**************************************************************************************************************************************
+
+2.Write a python program to find all null values in a given dataset and remove them.
+import pandas
+# reading the CSV file
+csvFile = pandas.read_csv('employees.csv')
+# displaying the contents of the CSV file
+print(csvFile)
+count=csvFile.isnull()
+#displaying NULL content
+print(count)
+newdf = csvFile.dropna()
+print(newdf)
+
+**************************************************************************************************************************************
+3.Create an HTML form that contain the Employee Registration details and write a JavaScript to validate DOB, Joining Date, and Salary
+<html>
+
+<head>
+    <title>Employee Registration</title>
+    <script>
+        function validate(){
+            const d = new  Date();
+            var DOB = document.getElementById("dob").value;
+             var DOB1 =new Date(DOB);
+            var jd = document.getElementById("joiningDate").value;
+            var jd1 = new Date(jd);
+            
+            var Salary = document.getElementById("salary").value;
+
+            if (!(DOB1 < d )){
+                alert("DOB should be less than current date ");
+                return false;
+            }
+            else if (!(jd1 >= d)){
+                alert("joining date should be greater than or equal to  current date ");
+                return false;
+
+            }
+            else if (!(Salary >= 10000)){
+                alert("salary should be greater than 10000");
+                return false;
+
+            }
+            alert("Verification Complete");
+            return true;
+        }
+    </script>
+</head>
+<body bgcolor="pink">
+    <form>
+        <h2>Employee registration</h2>
+        Name:<input type="text" id="name" /><br>
+        DOB:<input type="date" id="dob" /><br>
+        Joining Date:<input type="date" id="joiningDate" /><br>
+        Salary:<input type="number" id="salary"><br>
+        <input type="submit" value="Submit" onclick = validate()>
+    </form>
+   
+</body>
+</html>
+
